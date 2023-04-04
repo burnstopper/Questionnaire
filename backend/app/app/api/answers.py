@@ -25,16 +25,16 @@ async def submit_answer(answers_in: Answers,
 
     async with httpx.AsyncClient() as client:
         if respondent_token is None:
-            respondent_token = (await client.post(f'http://{settings.HOST}:{settings.TOKEN_SERVICE_PORT}'
-                                                  f'/user/new_respondent',
+            respondent_token = (await client.post(f'http://{settings.HOST}:{settings.TOKEN_SERVICE_PORT}/'
+                                                  f'api//user/new_respondent',
                                                   headers={'Authorization': f'Bearer {settings.BEARER_TOKEN}'})
                                 ).text
             # here must be also request to frontend for setting token in cookies
 
         respondent_id = int(
-            (await client.get(f'http://{settings.HOST}:{settings.TOKEN_SERVICE_PORT}'
-                               f'/user/{respondent_token}',
-                               headers={'Authorization': f'Bearer {settings.BEARER_TOKEN}'})
+            (await client.get(f'http://{settings.HOST}:{settings.TOKEN_SERVICE_PORT}/'
+                              f'api/user/{respondent_token}',
+                              headers={'Authorization': f'Bearer {settings.BEARER_TOKEN}'})
              ).text
         )
 

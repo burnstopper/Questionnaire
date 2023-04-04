@@ -7,21 +7,6 @@ from app.core.config import settings
 app = FastAPI()
 app.include_router(api_router)
 
-# at current no actual origins added
-origins = [
-    f"http://{settings.HOST}",
-    f"https://{settings.HOST}",
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
 if __name__ == "__main__":
     # Use this for debugging purposes only
     import uvicorn
