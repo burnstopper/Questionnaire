@@ -23,17 +23,24 @@ async def submit_answer(answers_in: Answers,
     Submit answers from respondent.
     """
 
-    async with httpx.AsyncClient() as client:
+    # doing 10 retries and if after this User microservice does not respond - raise normal exception (5xx)
+    transport = httpx.AsyncHTTPTransport(retries=10)
+    # setting connection timeout to 1 second with worst case 10 failed attempts with 1 second each
+    # other timeouts - read in this case (receiving information) are 10 seconds
+    # `httpx.Timeout must either include a default, or set all four parameters explicitly`
+    timeout = httpx.Timeout(10.0, connect=1.0)
+
+    async with httpx.AsyncClient(transport=transport, timeout=timeout) as client:
         if respondent_token is None:
-            respondent_token = (await client.post(f'http://{settings.HOST}:{settings.TOKEN_SERVICE_PORT}/'
-                                                  f'api//user/new_respondent',
+            respondent_token = (await client.post(f'http://{settings.HOST}:{settings.TOKEN_SERVICE_PORT}'
+                                                  f'/api//user/new_respondent',
                                                   headers={'Authorization': f'Bearer {settings.BEARER_TOKEN}'})
                                 ).text
             # here must be also request to frontend for setting token in cookies
 
         respondent_id = int(
-            (await client.get(f'http://{settings.HOST}:{settings.TOKEN_SERVICE_PORT}/'
-                              f'api/user/{respondent_token}',
+            (await client.get(f'http://{settings.HOST}:{settings.TOKEN_SERVICE_PORT}'
+                              f'/api/user/{respondent_token}',
                               headers={'Authorization': f'Bearer {settings.BEARER_TOKEN}'})
              ).text
         )
