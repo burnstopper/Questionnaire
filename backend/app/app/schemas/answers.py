@@ -6,7 +6,9 @@ from pydantic import BaseModel
 
 # schema of Results received from client side
 class Answers(BaseModel):
-    # date_of_birth contains only year and month, validating is done on the client side
+    # # gender contains information like "male/female", formed and validated on the frontend
+    gender: str
+    # date_of_birth contains only year and month, validating is done on the frontend
     date_of_birth: str
     # years_of_work contains number of years of work, validation is the same with date_of_birth
     years_of_work: int
