@@ -22,6 +22,7 @@ def upgrade() -> None:
                               index=True,
                               unique=True,
                               nullable=False),
+                    sa.Column('gender', sa.VARCHAR(), nullable=False),
                     sa.Column('date_of_birth', sa.VARCHAR(), nullable=False),
                     sa.Column('year_of_work_start', sa.INTEGER(), nullable=False),
                     sa.Column('speciality', sa.VARCHAR(), nullable=False),
