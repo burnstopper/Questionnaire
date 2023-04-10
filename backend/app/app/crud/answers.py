@@ -29,7 +29,7 @@ class CRUDAnswers:
         new_answers.respondent_id = respondent_id
 
         db.add(new_answers)
-        await db.commit()
+        await db.flush()
 
         return new_answers
 
@@ -58,7 +58,7 @@ class CRUDAnswers:
         setattr(db_answers, "year_of_work_start", datetime.today().year - update_data["years_of_work"])
 
         db.add(db_answers)
-        await db.commit()
+        await db.flush()
 
         return db_answers
 

@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     SQLALCHEMY_DATABASE_URI: str
 
     BEARER_TOKEN: str
-    HOST: str
+    TOKEN_SERVICE_HOST: str
     TOKEN_SERVICE_PORT: str
 
     class Config:
