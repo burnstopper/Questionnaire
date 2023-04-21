@@ -1,11 +1,10 @@
 [tool.poetry]
-name = "backend-template"
+name = "questionnaire-backend"
 version = "0.1.0"
-description = "Async fastapi+sqlalchemy(currently with sqlite) template for backend"
+description = "Questionnaire microservice backend"
 authors = ["Blinov Ilya"]
 license = "CC"
 readme = "README.md"
-packages = [{include = "backend_template"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -17,8 +16,6 @@ aiosqlite = "^0.18.0"
 httpx = "^0.23.3"
 uvicorn = {extras = ["standard"], version = "^0.20.0"}
 gunicorn = "^20.1.0"
-python-jose = {extras = ["cryptography"], version = "^3.3.0"}
-pyjwt = "^2.6.0"
 
 
 [build-system]

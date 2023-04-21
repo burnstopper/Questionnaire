@@ -1,6 +1,6 @@
 from app.database.base_class import Base
 
-from sqlalchemy import Integer, String, Column
+from sqlalchemy import Integer, String, Column, CheckConstraint
 
 
 # https://fastapi.tiangolo.com/tutorial/sql-databases/#create-the-database-models
@@ -13,6 +13,7 @@ class Answers(Base):
                            index=True,
                            unique=True,
                            nullable=False)
+    gender = Column(String, nullable=False)
     date_of_birth = Column(String, nullable=False)
     year_of_work_start = Column(Integer, nullable=False)
     speciality = Column(String, nullable=False)
