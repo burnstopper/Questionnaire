@@ -69,4 +69,3 @@ async def get_previous_results(respondent_token: str, db: Session = Depends(get_
                                         years_of_work=datetime.today().year - existing_answers.year_of_work_start,
                                         speciality=existing_answers.speciality).dict()
                         )
-
