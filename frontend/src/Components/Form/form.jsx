@@ -24,7 +24,7 @@ export default function Form() {
 			setToken(CookieLib.getCookieToken());
 			setParams({
 				...((await axios
-					.get("/api/fetch-results", {
+					.get("localhost:8081/api/fetch-results", {
 						params: {
 							respondent_token: token,
 						},
@@ -68,7 +68,7 @@ export default function Form() {
 		if (uncheck.length !== 0)
 			return alert(`Вы не ввели: ${uncheck.join(", ")}`);
 
-		axios.post("/api/submit", params, {
+		axios.post("localhost:8081/api/submit", params, {
 			params: { respondent_token: token },
 		});
 	}
