@@ -21,7 +21,13 @@ export default function Form() {
 	const [token, setToken] = useState(null);
 	useEffect(() => {
 		async function data() {
-			setToken(CookieLib.getCookieToken());
+			let tok = CookieLib.getCookieToken();
+			if (!tok) {
+				tok = await axios
+					.get("localhost:8001/api/get-token")
+					.then((x) => x.data);
+			}
+			setToken(tok);
 			setParams({
 				...((await axios
 					.get("localhost:8001/api/fetch-results", {
@@ -29,6 +35,7 @@ export default function Form() {
 							respondent_token: token,
 						},
 					})
+					.then((x) => x.data)
 					.catch(() => {})) || {}),
 				loading: false,
 			});
@@ -37,7 +44,7 @@ export default function Form() {
 	}, []);
 
 	function setWork(e) {
-		setParams({ ...params, work: e.target.value });
+		setParams({ ...params, speciality: e.target.value });
 		setAnother(false);
 	}
 	/**
@@ -50,27 +57,39 @@ export default function Form() {
 		return `${str.slice(0, 2)}/${str.slice(2, 6)}`;
 	}
 
-	function submit() {
+	async function submit() {
 		let birth = new Date(
-			params.birthday.slice(0, 2) + "/01/" + params.birthday.slice(3, 7)
+			params.date_of_birth.slice(0, 2) +
+				"/01/" +
+				params.date_of_birth.slice(3, 7)
 		);
 
 		if (
-			params.birthday.length < 7 ||
+			params.date_of_birth.length < 7 ||
 			isNaN(birth) ||
 			calculateAge(birth) <= 0
 			// || calculateAge(birth) > 90
 		)
 			return alert("Вы ввели неправильную дату");
-		let uncheck = ["gender", "work", "workedYears", "birthday"].filter(
-			(x) => !params[x] || params[x] === ""
-		);
+		let uncheck = [
+			"gender",
+			"speciality",
+			"years_of_work",
+			"date_of_birth",
+		].filter((x) => !params[x] || params[x] === "");
 		if (uncheck.length !== 0)
 			return alert(`Вы не ввели: ${uncheck.join(", ")}`);
 
-		axios.post("localhost:8001/api/submit", params, {
-			params: { respondent_token: token },
-		});
+		let resp = await axios.post(
+			`localhost:8001/api/submit?respondent_token=${token}`,
+			params,
+			{
+				params: { respondent_token: token },
+			}
+		);
+
+		if (resp.status === 200) return alert("Все прошло успешно");
+		else return alert(resp.statusText);
 	}
 
 	return params.loading ? (
@@ -134,16 +153,19 @@ export default function Form() {
 						id="search"
 						type="text"
 						placeholder="Месяц/год"
-						value={params.birthday}
+						value={params.date_of_birth}
 						onChange={(e) =>
-							setParams({ ...params, birthday: rebuildBirth(e.target.value) })
+							setParams({
+								...params,
+								date_of_birth: rebuildBirth(e.target.value),
+							})
 						}
 					/>
 				</div>
 
 				<div id="createQuizTile1" class="row">
 					<a id="quizText">Специальность</a>
-					<select id="select" onChange={setWork} value={params.work}>
+					<select id="select" onChange={setWork} value={params.speciality}>
 						<option value="1">Специальность 1</option>
 						<option value="2">Специальность 2</option>
 						<option value="3">Специальность 3</option>
@@ -159,11 +181,11 @@ export default function Form() {
 								id="search"
 								type="text"
 								placeholder="Введите свою специальность"
-								value={params.work}
+								value={params.speciality}
 								onChange={(e) =>
 									setParams({
 										...params,
-										work: e.target.value,
+										speciality: e.target.value,
 									})
 								}
 							/>
@@ -179,9 +201,12 @@ export default function Form() {
 						id="search"
 						type="text"
 						placeholder="Число"
-						value={params.workedYears}
+						value={params.years_of_work}
 						onChange={(e) =>
-							setParams({ ...params, workedYears: e.target.value.slice(0, 2) })
+							setParams({
+								...params,
+								years_of_work: e.target.value.slice(0, 2),
+							})
 						}
 					/>
 				</div>
