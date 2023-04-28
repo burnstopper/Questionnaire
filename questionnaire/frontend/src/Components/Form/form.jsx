@@ -26,6 +26,7 @@ export default function Form() {
 				tok = await axios
 					.get("/api/get-token")
 					.then((x) => x.data);
+				CookieLib.setCookieToken(token)
 			}
 			setToken(tok);
 			setParams({
@@ -84,7 +85,7 @@ export default function Form() {
 			`/api/submit`,
 			params,
 			{
-				params: { respondent_token: token },
+				params: { respondent_token: token }
 			}
 		);
 
