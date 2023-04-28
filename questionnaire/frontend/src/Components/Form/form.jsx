@@ -24,7 +24,7 @@ export default function Form() {
 			let tok = CookieLib.getCookieToken();
 			if (!tok) {
 				tok = await axios
-					.get("/api/get-token")
+					.post("/api/get-token")
 					.then((x) => x.data);
 				CookieLib.setCookieToken(token)
 			}
