@@ -24,13 +24,13 @@ export default function Form() {
 			let tok = CookieLib.getCookieToken();
 			if (!tok) {
 				tok = await axios
-					.get("localhost:8001/api/get-token")
+					.get("/api/get-token")
 					.then((x) => x.data);
 			}
 			setToken(tok);
 			setParams({
 				...((await axios
-					.get("localhost:8001/api/fetch-results", {
+					.get("/api/fetch-results", {
 						params: {
 							respondent_token: token,
 						},
@@ -81,7 +81,7 @@ export default function Form() {
 			return alert(`Вы не ввели: ${uncheck.join(", ")}`);
 
 		let resp = await axios.post(
-			`localhost:8001/api/submit?respondent_token=${token}`,
+			`/api/submit`,
 			params,
 			{
 				params: { respondent_token: token },
