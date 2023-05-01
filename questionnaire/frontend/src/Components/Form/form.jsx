@@ -28,14 +28,14 @@ export default function Form() {
 			}
 			setToken(tok);
 			setParams({
-				...((await axios
-					.get("/api/fetch-results", {
-						params: {
-							respondent_token: token,
-						},
-					})
-					.then((x) => x.data)
-					.catch(() => {})) || {}),
+				// ...((await axios
+				// 	.get("/api/fetch-results", {
+				// 		params: {
+				// 			respondent_token: token,
+				// 		},
+				// 	})
+				// 	.then((x) => x.data)
+				// 	.catch(() => {})) || {}),
 				loading: false,
 			});
 		}
@@ -44,7 +44,7 @@ export default function Form() {
 
 	function setWork(e) {
 		setParams({ ...params, speciality: e.target.value });
-		if (e.target.value == "") setAnother("");
+		if (e.target.value === "") setAnother("");
 		else setAnother(null);
 	}
 	/**
@@ -74,12 +74,14 @@ export default function Form() {
 
 		if (isNaN(params.years_of_work))
 			return alert("Вы ввели неправильно число лет работы");
-		let uncheck = [
-			"gender",
-			"speciality",
-			"years_of_work",
-			"date_of_birth",
-		].filter((x) => !params[x] || params[x] === "");
+		if (
+			(!params.speciality || params.speciality === "") &&
+			(!another || another === "")
+		)
+			return alert("Вы не ввели специальность");
+		let uncheck = ["gender", "years_of_work", "date_of_birth"].filter(
+			(x) => !params[x] || params[x] === ""
+		);
 		if (uncheck.length !== 0)
 			return alert(`Вы не ввели: ${uncheck.join(", ")}`);
 
