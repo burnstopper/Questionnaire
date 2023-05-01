@@ -17,7 +17,7 @@ function calculateAge(birthday) {
 
 export default function Form() {
 	const [params, setParams] = useState({ loading: true, speciality: "1" });
-	const [another, setAnother] = useState(false);
+	const [another, setAnother] = useState(null);
 	const [token, setToken] = useState(null);
 	useEffect(() => {
 		async function data() {
