@@ -5,10 +5,10 @@ let exp = {
 		return Cookies.get("token");
 	},
 	setCookieToken: (token) => {
-		Cookies.set("token", token, { expires: 365, secure: true });
+		Cookies.set("token", token, { expires: 365 /*, secure: true*/ });
 	},
 	removeCookie: () => {
-		Cookies.remove("token", { secure: true });
+		Cookies.remove("token" /*, { secure: true }*/);
 	},
 };
 
