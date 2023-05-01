@@ -16,17 +16,15 @@ function calculateAge(birthday) {
 }
 
 export default function Form() {
-	const [params, setParams] = useState({ loading: true });
+	const [params, setParams] = useState({ loading: true, speciality: "1" });
 	const [another, setAnother] = useState(false);
 	const [token, setToken] = useState(null);
 	useEffect(() => {
 		async function data() {
 			let tok = CookieLib.getCookieToken();
 			if (!tok) {
-				tok = await axios
-					.post("/api/get-token")
-					.then((x) => x.data);
-				CookieLib.setCookieToken(token)
+				tok = await axios.post("/api/get-token").then((x) => x.data);
+				CookieLib.setCookieToken(token);
 			}
 			setToken(tok);
 			setParams({
@@ -46,7 +44,8 @@ export default function Form() {
 
 	function setWork(e) {
 		setParams({ ...params, speciality: e.target.value });
-		setAnother(false);
+		if (e.target.value == "") setAnother("");
+		else setAnother(null);
 	}
 	/**
 	 *
@@ -72,6 +71,9 @@ export default function Form() {
 			// || calculateAge(birth) > 90
 		)
 			return alert("Вы ввели неправильную дату");
+
+		if (isNaN(params.years_of_work))
+			return alert("Вы ввели неправильно число лет работы");
 		let uncheck = [
 			"gender",
 			"speciality",
@@ -82,10 +84,15 @@ export default function Form() {
 			return alert(`Вы не ввели: ${uncheck.join(", ")}`);
 
 		let resp = await axios.post(
-			`/api/submit`,
-			params,
+			`/api/submit?respondent_token=${token}`,
 			{
-				params: { respondent_token: token }
+				date_of_birth: params.date_of_birth,
+				gender: params.gender,
+				speciality: params.speciality == "" ? another : params.speciality,
+				years_of_work: Number(params.years_of_work),
+			},
+			{
+				params: { respondent_token: token },
 			}
 		);
 
@@ -174,7 +181,7 @@ export default function Form() {
 					</select>
 				</div>
 
-				{another ? (
+				{another != null ? (
 					<div id="createQuizTile1" class="row">
 						<div id="createQuizTile1" class="row">
 							<a id="quizText">Другое</a>
@@ -182,13 +189,8 @@ export default function Form() {
 								id="search"
 								type="text"
 								placeholder="Введите свою специальность"
-								value={params.speciality}
-								onChange={(e) =>
-									setParams({
-										...params,
-										speciality: e.target.value,
-									})
-								}
+								value={another}
+								onChange={(e) => setAnother(e.target.value)}
 							/>
 						</div>
 					</div>
