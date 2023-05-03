@@ -28,14 +28,14 @@ export default function Form() {
 			}
 			setToken(tok);
 			setParams({
-				// ...((await axios
-				// 	.get("/api/fetch-results", {
-				// 		params: {
-				// 			respondent_token: token,
-				// 		},
-				// 	})
-				// 	.then((x) => x.data)
-				// 	.catch(() => {})) || {}),
+				...((await axios
+					.get("/api/fetch-results", {
+						params: {
+							respondent_token: token,
+						},
+					})
+					.then((x) => x.data)
+					.catch(() => {})) || {}),
 				loading: false,
 			});
 		}
