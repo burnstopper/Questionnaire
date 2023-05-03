@@ -42,7 +42,7 @@ async def submit_answer(answers_in: Answers,
     """
     Submit answers from respondent.
     """
-    respondent_id = get_id_by_token(respondent_token=respondent_token)
+    respondent_id = await get_id_by_token(respondent_token=respondent_token)
 
     existing_answers = await answers.get_by_respondent_id(db=db, respondent_id=respondent_id)
     if existing_answers is not None:

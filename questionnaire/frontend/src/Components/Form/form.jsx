@@ -92,9 +92,6 @@ export default function Form() {
 				gender: params.gender,
 				speciality: params.speciality == "" ? another : params.speciality,
 				years_of_work: Number(params.years_of_work),
-			},
-			{
-				params: { respondent_token: token },
 			}
 		);
 
