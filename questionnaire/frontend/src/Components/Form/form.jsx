@@ -8,7 +8,7 @@ import { Spinner } from "react-bootstrap";
 import CookieLib from "../../cookielib/index";
 
 function calculateAge(birthday) {
-	// birthday is a date
+	// birthday is h3 date
 	var ageDifMs = Date.now() - birthday;
 	if (ageDifMs < 0) return -1;
 	var ageDate = new Date(ageDifMs); // miliseconds from epoch
@@ -35,7 +35,7 @@ export default function Form() {
 						},
 					})
 					.then((x) => x.data)
-					.catch(() => {})) || {}),
+					.catch(() => {})) || { speciality: "1" }),
 				loading: false,
 			});
 		}
@@ -53,11 +53,18 @@ export default function Form() {
 	 * @returns
 	 */
 	function rebuildBirth(str) {
+		if (str.length <= 2) return str;
 		str = str.replace("/", "");
 		return `${str.slice(0, 2)}/${str.slice(2, 6)}`;
 	}
 
 	async function submit() {
+		let uncheck = ["gender", "years_of_work", "date_of_birth"].filter(
+			(x) => !params[x] || params[x] === ""
+		);
+		if (uncheck.length !== 0)
+			return alert(`Вы не ввели: ${uncheck.join(", ")}`);
+
 		let birth = new Date(
 			params.date_of_birth.slice(0, 2) +
 				"/01/" +
@@ -79,16 +86,11 @@ export default function Form() {
 			(!another || another === "")
 		)
 			return alert("Вы не ввели специальность");
-		let uncheck = ["gender", "years_of_work", "date_of_birth"].filter(
-			(x) => !params[x] || params[x] === ""
-		);
-		if (uncheck.length !== 0)
-			return alert(`Вы не ввели: ${uncheck.join(", ")}`);
 
 		let resp = await axios.post(`/api/submit?respondent_token=${token}`, {
 			date_of_birth: params.date_of_birth,
 			gender: params.gender,
-			speciality: params.speciality == "" ? another : params.speciality,
+			speciality: params.speciality === "" ? another : params.speciality,
 			years_of_work: Number(params.years_of_work),
 		});
 
@@ -112,20 +114,21 @@ export default function Form() {
 				id="loading"
 				style={{
 					backgroundImage:
-						"url('https://cdn.discordapp.com/attachments/1081428905082245130/1081484406549651517/ezgif-5-d1da3f96d7.gif') no-repeat center center fixed",
+						"url('https://cdn.discordapp.com/h3 ttachments/1081428905082245130/1081484406549651517/ezgif-5-d1da3f96d7.gif') no-repeat center center fixed",
 				}}
 			></div>
 		</>
 	) : (
 		<div class="parent">
 			<div id="upTile">
-				<a id="text">Форма анкеты</a>
+				<h3 id="text">Форма анкеты</h3>
+
 				<button id="btnBack" onclick=""></button>
 			</div>
 
+			<h3 id="quizText">Пол:</h3>
+
 			<div class="wrapper">
-				<a id="quizText">Пол:</a>
-				<br />
 				<input
 					type="radio"
 					name="select"
@@ -152,7 +155,7 @@ export default function Form() {
 
 			<div id="quizTile">
 				<div id="createQuizTile1" class="row">
-					<a id="quizText">День Рождения</a>
+					<h3 id="quizText">День рождения (в формате месяц/год)</h3>
 					<input
 						id="search"
 						type="text"
@@ -168,7 +171,7 @@ export default function Form() {
 				</div>
 
 				<div id="createQuizTile1" class="row">
-					<a id="quizText">Специальность</a>
+					<h3 id="quizText">Специальность</h3>
 					<select id="select" onChange={setWork} value={params.speciality}>
 						<option value="1">Специальность 1</option>
 						<option value="2">Специальность 2</option>
@@ -180,7 +183,7 @@ export default function Form() {
 				{another != null ? (
 					<div id="createQuizTile1" class="row">
 						<div id="createQuizTile1" class="row">
-							<a id="quizText">Другое</a>
+							<h3 id="quizText">Другое</h3>
 							<input
 								id="search"
 								type="text"
@@ -195,7 +198,7 @@ export default function Form() {
 				)}
 
 				<div id="createQuizTile1" class="row">
-					<a id="quizText">Сейчас лет работы</a>
+					<h3 id="quizText">Текущий профессиональный стаж в годах</h3>
 					<input
 						id="search"
 						type="text"

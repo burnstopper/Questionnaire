@@ -232,11 +232,14 @@ body {
 }
 
 #quizText {
+    text-align: center;
+    
     font-family: 'Inter';
     font-size: 24px;
     font-weight: 500;
     color: #547272;
     margin-bottom: 10px;
+    margin-right: 10px;
 }
 
 #descriptionArea {
