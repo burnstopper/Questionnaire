@@ -31,7 +31,7 @@ export default function Form() {
 				...((await axios
 					.get("/api/fetch-results", {
 						params: {
-							respondent_token: token,
+							respondent_token: tok,
 						},
 					})
 					.then((x) => x.data)
