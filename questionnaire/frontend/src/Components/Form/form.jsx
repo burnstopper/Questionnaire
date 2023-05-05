@@ -24,7 +24,7 @@ export default function Form() {
 			let tok = CookieLib.getCookieToken();
 			if (!tok) {
 				tok = await axios.post("/api/get-token").then((x) => x.data);
-				CookieLib.setCookieToken(token);
+				CookieLib.setCookieToken(tok);
 			}
 			setToken(tok);
 			setParams({
@@ -85,15 +85,12 @@ export default function Form() {
 		if (uncheck.length !== 0)
 			return alert(`Вы не ввели: ${uncheck.join(", ")}`);
 
-		let resp = await axios.post(
-			`/api/submit?respondent_token=${token}`,
-			{
-				date_of_birth: params.date_of_birth,
-				gender: params.gender,
-				speciality: params.speciality == "" ? another : params.speciality,
-				years_of_work: Number(params.years_of_work),
-			}
-		);
+		let resp = await axios.post(`/api/submit?respondent_token=${token}`, {
+			date_of_birth: params.date_of_birth,
+			gender: params.gender,
+			speciality: params.speciality == "" ? another : params.speciality,
+			years_of_work: Number(params.years_of_work),
+		});
 
 		if (resp.status === 200) return alert("Все прошло успешно");
 		else return alert(resp.statusText);
