@@ -202,7 +202,7 @@ export default function Form() {
 					<input
 						id="search"
 						type="text"
-						placeholder="Число"
+						placeholder="Количество"
 						value={params.years_of_work}
 						onChange={(e) =>
 							setParams({
