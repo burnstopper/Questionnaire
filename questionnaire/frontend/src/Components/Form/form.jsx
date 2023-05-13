@@ -113,22 +113,22 @@ export default function Form() {
 		)
 			return alert("Вы не ввели специальность");
 
-		console.log({
-			date_of_birth: params.date_of_birth,
-			gender: params.gender,
-			speciality: params.speciality === "" ? another : params.speciality,
-			years_of_work: Number(params.years_of_work),
-		});
-
-		// let resp = await axios.post(`/api/submit?respondent_token=${token}`, {
+		// console.log({
 		// 	date_of_birth: params.date_of_birth,
 		// 	gender: params.gender,
 		// 	speciality: params.speciality === "" ? another : params.speciality,
 		// 	years_of_work: Number(params.years_of_work),
 		// });
 
-		// if (resp.status === 200) return alert("Все прошло успешно");
-		// else return alert(resp.statusText);
+		let resp = await axios.post(`/api/submit?respondent_token=${token}`, {
+			date_of_birth: params.date_of_birth,
+			gender: params.gender,
+			speciality: params.speciality === "" ? another : params.speciality,
+			years_of_work: Number(params.years_of_work),
+		});
+
+		if (resp.status === 200) return alert("Все прошло успешно");
+		else return alert(resp.statusText);
 	}
 
 	return params.loading ? (
