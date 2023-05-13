@@ -14,7 +14,7 @@ let localization = {
 };
 
 let speciality = [
-	"Администрирование",
+	"Администратор",
 	"Аналитик",
 	"Архитектор",
 	"Дизайнер",
@@ -22,7 +22,7 @@ let speciality = [
 	"Разработчик",
 	"Студент ИТ-специальности",
 	"Тестировщик",
-	"Техническая поддержка",
+	"Сотрудник технической поддержки",
 ];
 function calculateAge(birthday) {
 	// birthday is h3 date
@@ -52,6 +52,13 @@ export default function Form() {
 						},
 					})
 					.then((x) => x.data)
+					.then((x) => {
+						if (!speciality.indexOf(x.speciality)) {
+							x.speciality = "";
+							x.another = x.speciality;
+						}
+						return x;
+					})
 					.catch(() => {})) || { speciality: speciality[0] }),
 				loading: false,
 			});
@@ -106,22 +113,22 @@ export default function Form() {
 		)
 			return alert("Вы не ввели специальность");
 
-		// console.log({
-		// 	date_of_birth: params.date_of_birth,
-		// 	gender: params.gender,
-		// 	speciality: params.speciality === "" ? another : params.speciality,
-		// 	years_of_work: Number(params.years_of_work),
-		// });
-
-		let resp = await axios.post(`/api/submit?respondent_token=${token}`, {
+		console.log({
 			date_of_birth: params.date_of_birth,
 			gender: params.gender,
 			speciality: params.speciality === "" ? another : params.speciality,
 			years_of_work: Number(params.years_of_work),
 		});
 
-		if (resp.status === 200) return alert("Все прошло успешно");
-		else return alert(resp.statusText);
+		// let resp = await axios.post(`/api/submit?respondent_token=${token}`, {
+		// 	date_of_birth: params.date_of_birth,
+		// 	gender: params.gender,
+		// 	speciality: params.speciality === "" ? another : params.speciality,
+		// 	years_of_work: Number(params.years_of_work),
+		// });
+
+		// if (resp.status === 200) return alert("Все прошло успешно");
+		// else return alert(resp.statusText);
 	}
 
 	return params.loading ? (
