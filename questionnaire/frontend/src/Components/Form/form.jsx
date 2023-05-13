@@ -8,7 +8,7 @@ import { Spinner } from "react-bootstrap";
 import CookieLib from "../../cookielib/index";
 
 let localization = {
-	date_of_birth: "месяц рождения",
+	date_of_birth: "дату рождения",
 	gender: "пол",
 	years_of_work: "стаж",
 };
@@ -181,7 +181,7 @@ export default function Form() {
 
 			<div id="quizTile">
 				<div id="createQuizTile1" class="row">
-					<h3 id="quizText">День рождения (в формате месяц/год)</h3>
+					<h3 id="quizText">Дата рождения (в формате месяц/год)</h3>
 					<input
 						id="search"
 						type="text"
@@ -210,16 +210,14 @@ export default function Form() {
 
 				{another != null ? (
 					<div id="createQuizTile1" class="row">
-						<div id="createQuizTile1" class="row">
-							<h3 id="quizText">Другое</h3>
-							<input
-								id="search"
-								type="text"
-								placeholder="Введите свою специальность"
-								value={another}
-								onChange={(e) => setAnother(e.target.value)}
-							/>
-						</div>
+						<h3 id="quizText">Другое</h3>
+						<input
+							id="search"
+							type="text"
+							placeholder="Ваша специальность"
+							value={another}
+							onChange={(e) => setAnother(e.target.value)}
+						/>
 					</div>
 				) : (
 					<></>
