@@ -54,8 +54,8 @@ export default function Form() {
 					.then((x) => x.data)
 					.then((x) => {
 						if (!speciality.includes(x.speciality)) {
-							x.speciality = "";
 							x.another = x.speciality;
+							x.speciality = "";
 						}
 						return x;
 					})
