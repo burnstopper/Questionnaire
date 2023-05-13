@@ -53,7 +53,7 @@ export default function Form() {
 					})
 					.then((x) => x.data)
 					.then((x) => {
-						if (!speciality.indexOf(x.speciality)) {
+						if (!speciality.includes(x.speciality)) {
 							x.speciality = "";
 							x.another = x.speciality;
 						}
