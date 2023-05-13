@@ -7,6 +7,23 @@ import { Spinner } from "react-bootstrap";
 
 import CookieLib from "../../cookielib/index";
 
+let localization = {
+	date_of_birth: "месяц рождения",
+	gender: "пол",
+	years_of_work: "стаж",
+};
+
+let speciality = [
+	"Администрирование",
+	"Аналитик",
+	"Архитектор",
+	"Дизайнер",
+	"Менеджер",
+	"Разработчик",
+	"Студент ИТ-специальности",
+	"Тестировщик",
+	"Техническая поддержка",
+];
 function calculateAge(birthday) {
 	// birthday is h3 date
 	var ageDifMs = Date.now() - birthday;
@@ -16,7 +33,7 @@ function calculateAge(birthday) {
 }
 
 export default function Form() {
-	const [params, setParams] = useState({ loading: true, speciality: "1" });
+	const [params, setParams] = useState({ loading: true });
 	const [another, setAnother] = useState(null);
 	const [token, setToken] = useState(null);
 	useEffect(() => {
@@ -35,7 +52,7 @@ export default function Form() {
 						},
 					})
 					.then((x) => x.data)
-					.catch(() => {})) || { speciality: "1" }),
+					.catch(() => {})) || { speciality: speciality[0] }),
 				loading: false,
 			});
 		}
@@ -59,11 +76,13 @@ export default function Form() {
 	}
 
 	async function submit() {
-		let uncheck = ["gender", "years_of_work", "date_of_birth"].filter(
+		let uncheck = ["gender", "date_of_birth", "years_of_work"].filter(
 			(x) => !params[x] || params[x] === ""
 		);
 		if (uncheck.length !== 0)
-			return alert(`Вы не ввели: ${uncheck.join(", ")}`);
+			return alert(
+				`Вы не ввели: ${uncheck.map((x) => localization[x]).join(", ")}`
+			);
 
 		let birth = new Date(
 			params.date_of_birth.slice(0, 2) +
@@ -86,6 +105,13 @@ export default function Form() {
 			(!another || another === "")
 		)
 			return alert("Вы не ввели специальность");
+
+		// console.log({
+		// 	date_of_birth: params.date_of_birth,
+		// 	gender: params.gender,
+		// 	speciality: params.speciality === "" ? another : params.speciality,
+		// 	years_of_work: Number(params.years_of_work),
+		// });
 
 		let resp = await axios.post(`/api/submit?respondent_token=${token}`, {
 			date_of_birth: params.date_of_birth,
@@ -173,9 +199,11 @@ export default function Form() {
 				<div id="createQuizTile1" class="row">
 					<h3 id="quizText">Специальность</h3>
 					<select id="select" onChange={setWork} value={params.speciality}>
-						<option value="1">Специальность 1</option>
-						<option value="2">Специальность 2</option>
-						<option value="3">Специальность 3</option>
+						{speciality.map((x) => (
+							<option key={x} value={x}>
+								{x}
+							</option>
+						))}
 						<option value="">Другое</option>
 					</select>
 				</div>
