@@ -5,6 +5,8 @@ services:
       build: ./questionnaire/backend
       networks:
         - local-net
+      volumes:
+        - ./questionnaire/backend/app/app/storage:/app/app/storage
 
 
     questionnaire-frontend:
