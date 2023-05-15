@@ -1,10 +1,40 @@
-version: "3.3"
+version: "3.9"
 services:
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    ports:
-      - "8001:8001"
-    volumes:
-      - ./backend/app:/app
+    questionnaire-backend:
+      container_name: questionnaire-backend
+      build: ./questionnaire/backend
+      networks:
+        - local-net
+      volumes:
+        - ./questionnaire/backend/app/app/storage:/app/app/storage
+
+    questionnaire-frontend:
+      extends:
+        file: questionnaire/docker-compose.yml
+        service: questionnaire-frontend
+
+
+    nginx:
+      container_name: nginx
+      build:
+        context: ./nginx
+        args:
+          QUESTIONNAIRE_PORT: ${QUESTIONNAIRE_PORT}
+      ports:
+        - "${QUESTIONNAIRE_PORT}:${QUESTIONNAIRE_PORT}"
+      volumes:
+        - questionnaire-front:/usr/share/nginx/questionnaire/
+      depends_on:
+        - questionnaire-backend
+        - questionnaire-frontend
+      networks:
+        - local-net
+
+
+volumes:
+  questionnaire-front:
+
+
+networks:
+  local-net:
+    driver: bridge

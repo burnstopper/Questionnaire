@@ -42,7 +42,7 @@ async def submit_answer(answers_in: Answers,
     """
     Submit answers from respondent.
     """
-    respondent_id = get_id_by_token(respondent_token=respondent_token)
+    respondent_id = await get_id_by_token(respondent_token=respondent_token)
 
     existing_answers = await answers.get_by_respondent_id(db=db, respondent_id=respondent_id)
     if existing_answers is not None:
@@ -51,12 +51,12 @@ async def submit_answer(answers_in: Answers,
         await answers.create(db=db, answers_in=answers_in, respondent_id=respondent_id)
 
 
-@answers_router.post("/fetch-results")
+@answers_router.get("/fetch-results")
 async def get_previous_results(respondent_token: str, db: Session = Depends(get_db)):
     """
     Fetch previous results of respondent.
     """
-    respondent_id = get_id_by_token(respondent_token=respondent_token)
+    respondent_id = await get_id_by_token(respondent_token=respondent_token)
 
     existing_answers = await answers.get_by_respondent_id(db=db, respondent_id=respondent_id)
     if existing_answers is None:

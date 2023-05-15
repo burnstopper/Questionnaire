@@ -1,8 +1,16 @@
 import pathlib
+from typing import Optional
 from pydantic import BaseSettings
 
 
+
 class Settings(BaseSettings):
+    HOST: str
+    PORT: int
+    WORKERS_PER_CORE: int = 1
+    WEB_CONCURRENCY: Optional[str] = None
+    LOG_LEVEL: str = "error"
+
     # url naming: https://docs.sqlalchemy.org/en/20/core/engines.html#sqlite
     SQLALCHEMY_DATABASE_URI: str
 
