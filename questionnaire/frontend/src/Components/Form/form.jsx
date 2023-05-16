@@ -147,7 +147,7 @@ export default function Form() {
 				id="loading"
 				style={{
 					backgroundImage:
-						"url('https://cdn.discordapp.com/h3 ttachments/1081428905082245130/1081484406549651517/ezgif-5-d1da3f96d7.gif') no-repeat center center fixed",
+						"url('https://cdn.discordapp.com/attachments/1081428905082245130/1081484406549651517/ezgif-5-d1da3f96d7.gif') no-repeat center center fixed",
 				}}
 			></div>
 		</>
@@ -155,8 +155,6 @@ export default function Form() {
 		<div class="parent">
 			<div id="upTile">
 				<h3 id="text">Форма анкеты</h3>
-
-				<button id="btnBack" onclick=""></button>
 			</div>
 
 			<h3 id="quizText">Пол:</h3>
